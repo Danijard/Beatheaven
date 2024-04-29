@@ -2,21 +2,24 @@ package com.modilebev.beatheaven.ui
 
 import androidx.compose.ui.graphics.Color
 
-class Themes constructor(
+class Themes (
     BackgroundColor: Color,
-    MainButtonGradientColors: List<Color>,
-    MainButtonSoftLightGradientColors: List<Color>) {
+    PrimaryColor: Color,
+    SecondaryColor: Color,
+    MainButtonGradientColor: Color,
+) {
 
-    val BackgroundColor = Color(0xFF051622)
-
-    val MainButtonGradientColors = listOf(Color(0xFF5AB758), Color(0xFF1A9F96))
-
-    val MainButtonSoftLightGradientColors = listOf(Color(0xFF5AB758).copy(alpha = 0.25f), Color.White.copy(alpha = 0f))
+    val BackgroundColor = BackgroundColor
+    val PrimaryColor = PrimaryColor
+    val SecondaryColor = SecondaryColor
+    val MainButtonGradientColors = listOf(MainButtonGradientColor, PrimaryColor)
+    val MainButtonSoftLightGradientColors = listOf(PrimaryColor.copy(alpha = 0.25f), PrimaryColor.copy(alpha = 0f))
 }
 
 val DefaultTheme = Themes(
     BackgroundColor = Color(0xFF051622),
-    MainButtonGradientColors = listOf(Color(0xFF5AB758), Color(0xFF1A9F96)),
-    MainButtonSoftLightGradientColors = listOf(Color(0xFF5AB758).copy(alpha = 0.25f), Color.White.copy(alpha = 0f)),
+    PrimaryColor = Color(0xFF1A9F96),
+    SecondaryColor = Color(0xFFDEB992),
+    MainButtonGradientColor = Color(0xFF5AB758)
 )
 
