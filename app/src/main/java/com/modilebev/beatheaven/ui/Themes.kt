@@ -8,12 +8,11 @@ class Themes (
     SecondaryColor: Color,
     MainButtonGradientColor: Color,
 ) {
-
     val BackgroundColor = BackgroundColor
     val PrimaryColor = PrimaryColor
     val SecondaryColor = SecondaryColor
     val MainButtonGradientColors = listOf(MainButtonGradientColor, PrimaryColor)
-    val MainButtonSoftLightGradientColors = listOf(PrimaryColor.copy(alpha = 0.25f), PrimaryColor.copy(alpha = 0f))
+    val MainButtonSoftLightGradientColors = listOf(MainButtonGradientColor.copy(alpha = 0.33f), Color.White.copy(alpha = 0f))
 }
 
 val DefaultTheme = Themes(
