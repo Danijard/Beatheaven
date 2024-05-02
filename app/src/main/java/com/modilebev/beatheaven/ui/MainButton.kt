@@ -1,5 +1,6 @@
 package com.modilebev.beatheaven.ui
 
+import android.util.Log
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -19,7 +20,9 @@ import androidx.compose.ui.graphics.drawscope.withTransform
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.unit.dp
+import com.modilebev.beatheaven.MainActivity
 import com.modilebev.beatheaven.R
+import com.modilebev.beatheaven.client.tryRecording
 import com.modilebev.beatheaven.colorScheme
 import com.modilebev.beatheaven.density
 import com.modilebev.beatheaven.heightPx
@@ -27,16 +30,17 @@ import com.modilebev.beatheaven.widthPx
 
 val topIdent = heightPx / 4.03f / 2
 
+
 val rightTopCorner = Offset(widthPx / 2 + widthPx / 2 / 1.98f, heightPx / 2 - topIdent - widthPx / 2 / 1.98f)
 val leftBottomCorner = Offset(widthPx / 2 - widthPx / 2 / 1.98f, heightPx / 2 - topIdent + widthPx / 2 / 1.98f)
 @Composable
-fun CreateButton() {
+fun CreateButton(activity: MainActivity) {
     DrawButton()
-    MakeItClickable()
+    MakeItClickable(activity)
 }
 
 @Composable
-fun MakeItClickable() {
+fun MakeItClickable(activity: MainActivity) {
     Box(modifier = Modifier
         .graphicsLayer {
             clip = true
@@ -47,13 +51,17 @@ fun MakeItClickable() {
         .size((widthPx / density).dp / 1.98f)
         .clip(CircleShape)
         .clickable {
-            onMainButtonClick()
+            Log.d("mytag", "Button clicked1")
+            onMainButtonClick(activity)
+
             //button for audio stream
         }
     )
 }
 
-fun onMainButtonClick() {
+fun onMainButtonClick(activity: MainActivity) {
+    Log.d("mytag", "Button clicked2")
+    tryRecording(activity)
 
 }
 
