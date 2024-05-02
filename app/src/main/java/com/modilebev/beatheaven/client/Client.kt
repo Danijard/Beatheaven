@@ -6,13 +6,11 @@ import android.media.AudioRecord
 import android.media.MediaRecorder
 import com.modilebev.beatheaven.MainActivity
 import com.modilebev.beatheaven.checkPermissions
-import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.Response
 import okhttp3.WebSocket
 import okhttp3.WebSocketListener
 import okio.ByteString
-import okio.ByteString.Companion.toByteString
 
 
 private const val sampleRate = 44100
@@ -36,7 +34,7 @@ private val request = Request.Builder().url(webSocketUrl).build()
 
 fun tryRecording(activity: MainActivity) {
     if (checkPermissions(activity)) {
-        audioRecord.startRecording()
+        /*audioRecord.startRecording()
 
         val buffer = ByteArray(bufferSize)
         val webSocket = OkHttpClient().newWebSocket(request, EchoWebSocketListener())
@@ -48,7 +46,7 @@ fun tryRecording(activity: MainActivity) {
             }
         }
 
-        webSocket.close(EchoWebSocketListener.NORMAL_CLOSURE_STATUS, "End of stream")
+        webSocket.close(EchoWebSocketListener.NORMAL_CLOSURE_STATUS, "End of stream")*/
     }
 }
 
