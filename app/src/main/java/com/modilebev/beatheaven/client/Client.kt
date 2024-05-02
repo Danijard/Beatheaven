@@ -53,7 +53,7 @@ fun tryRecording(activity: MainActivity) {
                             webSocket.close(EchoWebSocketListener.NORMAL_CLOSURE_STATUS, "End of stream")
                             isRecording = false
                         }
-                    }, 10000) // Остановка записи через 10 секунд
+                    }, 15000) // Остановка записи через 15 секунд
 
                     while (audioRecord?.recordingState == AudioRecord.RECORDSTATE_RECORDING) {
                         val bytesRead = audioRecord?.read(buffer, 0, bufferSize)
