@@ -1,55 +1,81 @@
 package com.modilebev.beatheaven.client
-
 import android.annotation.SuppressLint
 import android.media.AudioFormat
 import android.media.AudioRecord
 import android.media.MediaRecorder
 import com.modilebev.beatheaven.MainActivity
 import com.modilebev.beatheaven.checkPermissions
+import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.Response
 import okhttp3.WebSocket
 import okhttp3.WebSocketListener
 import okio.ByteString
-
+import okio.ByteString.Companion.toByteString
+import android.os.Handler
+import android.os.Looper
 
 private const val sampleRate = 44100
 private const val channelConfig = AudioFormat.CHANNEL_IN_MONO
 private const val audioFormat = AudioFormat.ENCODING_PCM_16BIT
 private val bufferSize = AudioRecord.getMinBufferSize(sampleRate, channelConfig, audioFormat)
 
+private var isRecording = false
+private var audioRecord: AudioRecord? = null
+private var webSocket: WebSocket? = null
 
-@SuppressLint("MissingPermission")
-val audioRecord = AudioRecord(
-    MediaRecorder.AudioSource.MIC,
-    sampleRate,
-    channelConfig,
-    audioFormat,
-    bufferSize
-)
-
-private const val webSocketUrl = "ws://1.1.1.1:1111"
+private const val webSocketUrl = "ws://192.168.0.239:1111"
 private val request = Request.Builder().url(webSocketUrl).build()
-
 
 fun tryRecording(activity: MainActivity) {
     if (checkPermissions(activity)) {
-        /*audioRecord.startRecording()
+        if (!isRecording){
+            @SuppressLint("MissingPermission")
+            audioRecord = AudioRecord(
+                MediaRecorder.AudioSource.MIC,
+                sampleRate,
+                channelConfig,
+                audioFormat,
+                bufferSize
+            )
 
-        val buffer = ByteArray(bufferSize)
-        val webSocket = OkHttpClient().newWebSocket(request, EchoWebSocketListener())
+            webSocket = OkHttpClient().newWebSocket(request, object : WebSocketListener() {
+                override fun onOpen(webSocket: WebSocket, response: Response) {
+                    // Запуск записи после установки соединения
+                    audioRecord?.startRecording()
+                    isRecording = true
+                    val buffer = ByteArray(bufferSize)
 
-        while (audioRecord.recordingState == AudioRecord.RECORDSTATE_RECORDING) {
-            val bytesRead = audioRecord.read(buffer, 0, bufferSize)
-            if (bytesRead > 0) {
-                webSocket.send(buffer.toByteString(0, bytesRead))
-            }
+                    val handler = Handler(Looper.getMainLooper())
+                    handler.postDelayed({
+                        if (audioRecord?.recordingState == AudioRecord.RECORDSTATE_RECORDING) {
+                            audioRecord?.stop()
+                            webSocket.close(EchoWebSocketListener.NORMAL_CLOSURE_STATUS, "End of stream")
+                            isRecording = false
+                        }
+                    }, 10000) // Остановка записи через 10 секунд
+
+                    while (audioRecord?.recordingState == AudioRecord.RECORDSTATE_RECORDING) {
+                        val bytesRead = audioRecord?.read(buffer, 0, bufferSize)
+                        if (bytesRead != null && bytesRead > 0) {
+                            webSocket.send(buffer.toByteString(0, bytesRead))
+                        }
+                    }
+                }
+
+                override fun onFailure(webSocket: WebSocket, t: Throwable, response: Response?) {
+                    // Обработка ошибки
+                    t.printStackTrace()
+                }
+            })
+        } else {
+            // Остановка записи при повторном нажатии кнопки
+            audioRecord?.stop()
+            webSocket?.close(EchoWebSocketListener.NORMAL_CLOSURE_STATUS, "End of stream")
+            isRecording = false
         }
-
-        webSocket.close(EchoWebSocketListener.NORMAL_CLOSURE_STATUS, "End of stream")*/
     }
 }
-
 
 class EchoWebSocketListener : WebSocketListener() {
     override fun onOpen(webSocket: WebSocket, response: Response) {
