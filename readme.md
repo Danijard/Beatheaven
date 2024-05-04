@@ -3,4 +3,6 @@
 
 ## Ссылки на остальные репозитории проекта:
 https://github.com/akella44/BeatheavenBackend (бэкенд)\
-https://github.com/actuallynotsarcasm/beatheaven_ai (api нейросетей для проекта)
+https://github.com/actuallynotsarcasm/beatheaven_ai (api нейросетей для проекта)\\
+
+Пока тут пусто, но в ветках уже что-то происходит)
