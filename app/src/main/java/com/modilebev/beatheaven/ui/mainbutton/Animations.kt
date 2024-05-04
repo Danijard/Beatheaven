@@ -1,4 +1,4 @@
-package com.modilebev.beatheaven.themes
+package com.modilebev.beatheaven.ui.mainbutton
 
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.tween
@@ -7,10 +7,10 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 
 @Composable
-fun getAnimatedAlpha(): Float { // fadeIn Animation
-    val alphaAnim = remember { Animatable(initialValue = 0f) }
+fun getAnimatedAlpha(): Float { //!fadeIn Animation
+    val alphaState = remember { Animatable(initialValue = 0f) }
     LaunchedEffect(key1 = true) {
-        alphaAnim.animateTo(
+        alphaState.animateTo(
             targetValue = 1f,
             animationSpec = tween(
                 durationMillis = 2000,
@@ -18,24 +18,20 @@ fun getAnimatedAlpha(): Float { // fadeIn Animation
             )
         )
     }
-    return alphaAnim.value
+    return alphaState.value
 }
 
 @Composable
-fun getAnimatedScale(): Float { //sizeIn Animation
-    val scaleAnim = remember { Animatable(initialValue = 0f) }
+fun getAnimatedScale(): Float { //!sizeIn Animation
+    val scaleState = remember { Animatable(initialValue = 0f) }
     LaunchedEffect(key1 = true) {
-        scaleAnim.animateTo(
+        scaleState.animateTo(
             targetValue = 1f,
             animationSpec = tween(
                 durationMillis = 500,
-                delayMillis = 100
+                delayMillis = 100,
             )
         )
     }
-    return scaleAnim.value
-}
-
-fun animateButton() {
-
+    return scaleState.value
 }

@@ -4,7 +4,7 @@
     <selectionStates>
       <SelectionState runConfigName="Beatheaven">
         <option name="selectionMode" value="DROPDOWN" />
-        <DropdownSelection timestamp="2024-05-02T18:35:47.204629200Z">
+        <DropdownSelection timestamp="2024-05-04T01:50:53.673960Z">
           <Target type="DEFAULT_BOOT">
             <handle>
               <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\Win_Daniht\.android\avd\Pixel_3a_API_34_extension_level_7_x86_64.avd" />

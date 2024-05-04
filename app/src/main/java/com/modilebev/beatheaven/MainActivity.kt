@@ -5,9 +5,8 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import com.modilebev.beatheaven.themes.DefaultTheme
 import com.modilebev.beatheaven.themes.Themes
-import com.modilebev.beatheaven.ui.CreateButton
 import com.modilebev.beatheaven.ui.DrawBackground
-import com.modilebev.beatheaven.ui.DrawParams
+import com.modilebev.beatheaven.ui.mainbutton.CreateButton
 
 class MainActivity : ComponentActivity() {
     companion object {
@@ -26,7 +25,6 @@ class MainActivity : ComponentActivity() {
         setContent {
             DrawBackground()
             CreateButton()
-            DrawParams()
         }
     }
 }
@@ -35,4 +33,4 @@ val widthPx: Float = MainActivity.screenWidth
 val heightPx: Float = MainActivity.screenHeight
 val density: Float = MainActivity.screenDensity
 val colorScheme: Themes = MainActivity.colorScheme
-const val recordingTiming: Float = 15.0f //seconds
+const val recordTime: Float = 15.0f //seconds
