@@ -1,7 +1,9 @@
 
 import 'package:beatheaven_flutter/ui/widgets/mainbutton/main_button.dart';
 import 'package:flutter/material.dart';
-import 'package:beatheaven_flutter/ui/widgets/background.dart';
+import 'package:beatheaven_flutter/ui/widgets/background/background.dart';
+
+import 'TestPolygon.dart';
 
 void main() {
   runApp(const BeatheavenApp());
@@ -24,10 +26,10 @@ class MainPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Stack(
+    return Stack(
       children: [
         Background(),
-        MainButton()
+        RecordButton(),
       ],
     );
   }

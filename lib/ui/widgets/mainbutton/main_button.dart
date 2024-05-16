@@ -1,38 +1,161 @@
+import 'dart:math';
+
 import 'package:beatheaven_flutter/ui/themes/themes.dart';
 import 'package:beatheaven_flutter/ui/global_ui_values.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-class MainButton extends StatelessWidget {
-  const MainButton({super.key});
+class RotationCurve extends Curve {
+  const RotationCurve();
+
+  @override
+  double transformInternal(double t) {
+    return 3 * pow((1-t), 2) * t * -0.5 + 3 * (1-t) * t*t + t*t*t;
+  }
+}
+
+
+class RecordButton extends StatefulWidget {
+  const RecordButton({super.key});
+
+  @override
+  RecordButtonState createState() => RecordButtonState();
+}
+
+class RecordButtonState extends State<RecordButton> with TickerProviderStateMixin {
+  late AnimationController _controllerBouncer;
+  late AnimationController _controllerRotator;
+  late Animation<double> _animationBouncer;
+  late Animation<double> _animationRotator;
+  double _angle = 0.0;
+  double _yButtonOffset = 0.0;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _controllerRotator = AnimationController(
+      duration: Duration(milliseconds: mainButtonRotationTime),
+      vsync: this,
+    );
+
+    _controllerRotator.addListener(() {
+      print('Controller Value: ${_controllerRotator.value}, Animation Value: ${_animationRotator.value}');
+      setState(() {
+        _angle = _animationRotator.value;
+      });
+    });
+
+    _controllerRotator.addStatusListener((status) {
+      if (status == AnimationStatus.completed) {
+        _controllerRotator.reset();
+      }
+    });
+
+    _controllerBouncer = AnimationController(
+      duration: mainButtonBackBounceDuration,
+      vsync: this,
+    );
+
+    _controllerBouncer.addListener(() {
+      setState(() {
+        _yButtonOffset = _animationBouncer.value;
+      });
+      if (_controllerBouncer.value >= 0.7) {
+        _controllerBouncer.reset();
+        _yButtonOffset = 0.0;
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Stack(
-        children: [
-          _MainButton(),
-          _ButtonSoftlightGradient(),
-          _ButtonImage(),
-        ],
-      ),
+    return AnimatedBuilder(
+      animation: _controllerBouncer,
+      builder: (context, _) {
+        return Positioned(
+            top: screenHeight / 2 - mainButtonRadius * 2 + _yButtonOffset*(1-(_yButtonOffset*2/(screenHeight*3))),
+            left: screenWidth / 2 - mainButtonRadius,
+            child: Stack(
+              children: [
+                Transform.rotate(
+                    angle: _yButtonOffset/200+_angle/57.3,
+                    origin: Offset(-screenWidth/2+mainButtonRadius, -screenHeight/2+mainButtonRadius),
+                    child: const ButtonWidget()),
+                ClipOval(
+                  child: SizedBox(
+                    width: mainButtonRadius * 2,
+                    height: mainButtonRadius * 2,
+                    child: GestureDetector(
+                      onTap: () {
+                        _controllerRotator.forward();
+                        _animationRotator = Tween<double>(begin: 0, end: 3600).animate(CurvedAnimation(
+                            parent: _controllerRotator,
+                            curve: RotationCurve()
+                        ));
+                        print('Button Tapped');
+                      },
+                      onPanUpdate: (tapInfo) {
+                        final touchPosition = tapInfo.delta;
+                        if (_yButtonOffset + touchPosition.dy > screenHeight / 2 - mainButtonRadius) {
+                          setState(() {
+                            _yButtonOffset = screenHeight / 2 - mainButtonRadius;
+                          });
+                        }
+                        if (_yButtonOffset + touchPosition.dy > 0) {
+                          setState(() {
+                            _yButtonOffset += touchPosition.dy;
+                          });
+                        }
+                      },
+                      onPanEnd: (tapInfo) {
+                        _controllerBouncer.forward();
+                        _animationBouncer = Tween<double>(begin: _yButtonOffset, end: 0.0).animate(CurvedAnimation(
+                            parent: _controllerBouncer,
+                            curve: Curves.elasticOut
+                        ));
+                      }
+                    ),
+                  ),
+                ),
+              ],
+            )
+        );
+      }
     );
   }
 }
 
-class _MainButton extends StatefulWidget {
-  const _MainButton();
+class ButtonWidget extends StatelessWidget {
+  const ButtonWidget({super.key});
 
   @override
-  _MainButtonState createState() => _MainButtonState();
+  Widget build(BuildContext context) {
+    return const Stack(
+      children: [
+        _SoftlightGradientLayer(),
+        _ButtonLayer(),
+        _ImageLayer()
+      ],
+    );
+  }
 }
 
-class _MainButtonState extends State<_MainButton> {
+class _ButtonLayer extends StatefulWidget {
+  const _ButtonLayer();
+
+  @override
+  _ButtonLayerState createState() => _ButtonLayerState();
+}
+
+class _ButtonLayerState extends State<_ButtonLayer> {
   double _scale = 0.0;
 
   @override
   void initState() {
     super.initState();
-    Future.delayed(sizeInAnimationDelay, () {
+    Future.delayed(scaleInAnimationDelay, () {
       setState(() {
         _scale = 1.0;
       });
@@ -41,43 +164,42 @@ class _MainButtonState extends State<_MainButton> {
 
   @override
   Widget build(BuildContext context) {
-    return Transform.translate(
-      offset: mainButtonCenter,
-      child: Center(
-        child: AnimatedScale(
-          scale: _scale,
-          duration: sizeInAnimationDuration,
-          child: Stack(
-            children: [
-              Container(
-                width: mainButtonRadius * 2,
-                height: mainButtonRadius * 2,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  gradient: LinearGradient(
-                    begin: Alignment.topRight,
-                    end: Alignment.bottomLeft,
-                    colors: defaultTheme.mainButtonGradientColors,
-                  ),
-                ),
-              ),
-            ]
-          )
-        )
+    return AnimatedScale(
+      scale: _scale,
+      curve: scaleInAnimationCurve,
+      duration: scaleInAnimationDuration,
+      child: Container(
+        width: mainButtonRadius * 2,
+        height: mainButtonRadius * 2,
+        decoration: BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+              color: defaultTheme.backgroundColor,
+              blurRadius: 3,
+              spreadRadius: 1,
+            ),
+          ],
+          shape: BoxShape.circle,
+          gradient: LinearGradient(
+            stops: const [0.15 , 1.0],
+            begin: Alignment.topRight,
+            end: Alignment.bottomLeft,
+            colors: defaultTheme.mainButtonGradientColors,
+          ),
+        ),
       )
     );
   }
 }
 
-
-class _ButtonSoftlightGradient extends StatefulWidget {
-  const _ButtonSoftlightGradient();
+class _SoftlightGradientLayer extends StatefulWidget {
+  const _SoftlightGradientLayer();
 
   @override
-  _ButtonSoftlightGradientState createState() => _ButtonSoftlightGradientState();
+  _SoftlightGradientLayerState createState() => _SoftlightGradientLayerState();
 }
 
-class _ButtonSoftlightGradientState extends State<_ButtonSoftlightGradient> {
+class _SoftlightGradientLayerState extends State<_SoftlightGradientLayer> {
   double _opacity = 0.0;
 
   @override
@@ -92,15 +214,18 @@ class _ButtonSoftlightGradientState extends State<_ButtonSoftlightGradient> {
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedOpacity(
-      opacity: _opacity,
-      duration: fadeInAnimationDuration,
-      child: Transform.translate(
-        offset: mainButtonCenter,
+    return Transform.translate(
+      offset: Offset(-mainButtonRadius, -screenHeight/2+mainButtonRadius),
+      child: AnimatedOpacity(
+        opacity: _opacity,
+        curve: fadeInAnimationCurve,
+        duration: fadeInAnimationDuration,
         child: Container(
+          width: screenWidth,
+          height: screenHeight,
           decoration: BoxDecoration(
-            shape: BoxShape.circle,
             gradient: RadialGradient(
+              stops: const [0.5, 1.0],
               center: Alignment.center,
               colors: defaultTheme.mainButtonSoftLightGradientColors,
             ),
@@ -111,20 +236,20 @@ class _ButtonSoftlightGradientState extends State<_ButtonSoftlightGradient> {
   }
 }
 
-class _ButtonImage extends StatefulWidget {
-  const _ButtonImage();
+class _ImageLayer extends StatefulWidget {
+  const _ImageLayer();
 
   @override
-  _ButtonImageState createState() => _ButtonImageState();
+  _ImageLayerState createState() => _ImageLayerState();
 }
 
-class _ButtonImageState extends State<_ButtonImage> {
+class _ImageLayerState extends State<_ImageLayer> {
   double _scale = 0.0;
 
   @override
   void initState() {
     super.initState();
-    Future.delayed(sizeInAnimationDelay, () {
+    Future.delayed(scaleInAnimationDelay, () {
       setState(() {
         _scale = 1.0;
       });
@@ -133,22 +258,18 @@ class _ButtonImageState extends State<_ButtonImage> {
 
   @override
   Widget build(BuildContext context) {
-    return Transform.translate(
-        offset: mainButtonCenter,
-        child: Center(
-            child: AnimatedScale(
-                scale: _scale,
-                duration: sizeInAnimationDuration,
-                child: Stack(
-                    children: [
-                      Image.asset(
-                        image,
-                        width: mainButtonRadius * 2,
-                        height: mainButtonRadius * 2,
-                      ),
-                    ]
-                )
-            )
+    return AnimatedScale(
+        scale: _scale,
+        curve: scaleInAnimationCurve,
+        duration: scaleInAnimationDuration,
+        child: Stack(
+            children: [
+              Image.asset(
+                buttonLogo,
+                width: mainButtonRadius * 2,
+                height: mainButtonRadius * 2,
+              ),
+            ]
         )
     );
   }
