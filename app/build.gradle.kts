@@ -53,7 +53,12 @@ dependencies {
 
     implementation(libs.okhttp)
 
+    implementation("com.microsoft.signalr:signalr:5.0.11")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.1")
 
+    implementation ("androidx.appcompat:appcompat:1.1.0")
+    // For loading and tinting drawables on older versions of the platform
+    implementation ("androidx.appcompat:appcompat-resources:1.1.0")
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)

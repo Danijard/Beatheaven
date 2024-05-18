@@ -30,9 +30,9 @@ import com.modilebev.beatheaven.widthPx
 
 val topIdent = heightPx / 4.03f / 2
 
-
 val rightTopCorner = Offset(widthPx / 2 + widthPx / 2 / 1.98f, heightPx / 2 - topIdent - widthPx / 2 / 1.98f)
 val leftBottomCorner = Offset(widthPx / 2 - widthPx / 2 / 1.98f, heightPx / 2 - topIdent + widthPx / 2 / 1.98f)
+
 @Composable
 fun CreateButton(activity: MainActivity) {
     DrawButton()
@@ -41,28 +41,26 @@ fun CreateButton(activity: MainActivity) {
 
 @Composable
 fun MakeItClickable(activity: MainActivity) {
-    Box(modifier = Modifier
-        .graphicsLayer {
-            clip = true
-            shape = CircleShape
-            translationY = (heightPx / 2 - topIdent - widthPx / 2 / 1.98f)
-            translationX = (widthPx / 2 - widthPx / 2 / 1.98f)
-        }
-        .size((widthPx / density).dp / 1.98f)
-        .clip(CircleShape)
-        .clickable {
-            Log.d("mytag", "Button clicked1")
-            onMainButtonClick(activity)
-
-            //button for audio stream
-        }
+    Box(
+        modifier = Modifier
+            .graphicsLayer {
+                clip = true
+                shape = CircleShape
+                translationY = (heightPx / 2 - topIdent - widthPx / 2 / 1.98f)
+                translationX = (widthPx / 2 - widthPx / 2 / 1.98f)
+            }
+            .size((widthPx / density).dp / 1.98f)
+            .clip(CircleShape)
+            .clickable {
+                Log.d("mytag", "Button clicked1")
+                onMainButtonClick(activity)
+            }
     )
 }
 
 fun onMainButtonClick(activity: MainActivity) {
     Log.d("mytag", "Button clicked2")
-    tryRecording(activity)
-
+    activity.toggleRecording()
 }
 
 @Composable
@@ -71,7 +69,6 @@ fun DrawButton() {
     val scaleMultiplier = widthPx / (image.width * 1.83f)
 
     Canvas(modifier = Modifier.fillMaxSize()) {
-
         val gradient = Brush.linearGradient(
             colors = colorScheme.MainButtonGradientColors,
             start = rightTopCorner,
@@ -107,8 +104,7 @@ fun DrawButton() {
         }) {
             drawImage(
                 image = image,
-                topLeft = Offset(widthPx / 2 - image.width / 2,
-                    heightPx / 2 - topIdent - image.height / 2),
+                topLeft = Offset(widthPx / 2 - image.width / 2, heightPx / 2 - topIdent - image.height / 2)
             )
         }
     }
