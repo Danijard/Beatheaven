@@ -1,4 +1,4 @@
-# beatheaven_flutter
+# beatheaven
 
 A new Flutter project.
 

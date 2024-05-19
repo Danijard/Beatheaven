@@ -1,4 +1,4 @@
-package com.modilebev.beatheaven_flutter
+package com.example.beatheaven
 
 import io.flutter.embedding.android.FlutterActivity
 

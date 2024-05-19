@@ -1,10 +1,10 @@
 import 'dart:math';
-
-import 'package:beatheaven_flutter/ui/themes/themes.dart';
-import 'package:beatheaven_flutter/ui/global_ui_values.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+
+import '../global_ui_values.dart';
+import '../themes/themes.dart';
 
 class RotationCurve extends Curve {
   const RotationCurve();
@@ -36,12 +36,11 @@ class RecordButtonState extends State<RecordButton> with TickerProviderStateMixi
     super.initState();
 
     _controllerRotator = AnimationController(
-      duration: Duration(milliseconds: mainButtonRotationTime),
+      duration: const Duration(milliseconds: mainButtonRotationTime),
       vsync: this,
     );
 
     _controllerRotator.addListener(() {
-      print('Controller Value: ${_controllerRotator.value}, Animation Value: ${_animationRotator.value}');
       setState(() {
         _angle = _animationRotator.value;
       });
@@ -89,14 +88,15 @@ class RecordButtonState extends State<RecordButton> with TickerProviderStateMixi
                     height: mainButtonRadius * 2,
                     child: GestureDetector(
                       onTap: () {
+                        TapDetector.instance.value = !TapDetector.instance.value;
                         _controllerRotator.forward();
                         _animationRotator = Tween<double>(begin: 0, end: 3600).animate(CurvedAnimation(
                             parent: _controllerRotator,
-                            curve: RotationCurve()
+                            curve: const RotationCurve()
                         ));
-                        print('Button Tapped');
                       },
                       onPanUpdate: (tapInfo) {
+                        TapDetector.instance.value = !TapDetector.instance.value;
                         final touchPosition = tapInfo.delta;
                         if (_yButtonOffset + touchPosition.dy > screenHeight / 2 - mainButtonRadius) {
                           setState(() {

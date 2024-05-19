@@ -1,4 +1,4 @@
-name: beatheaven_flutter
+name: beatheaven
 description: "A new Flutter project."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
@@ -53,12 +53,24 @@ dev_dependencies:
 # The following section is specific to Flutter packages.
 flutter:
 
+  assets:
+    - assets/images/beatheaven_logo_transparent.png
+    - assets/fonts/DelaGothicOne-Regular.ttf
+    - assets/fonts/Montserrat-Regular.ttf
+
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
-  assets:
-    - assets/images/beatheaven_logo_transparent.png
+
+  fonts:
+    - family: DelaGothicOne
+      fonts:
+        - asset: assets/fonts/DelaGothicOne-Regular.ttf
+
+    - family: Montserrat
+      fonts:
+        - asset: assets/fonts/Montserrat-Regular.ttf
 
   # To add assets to your application, add an assets section, like this:
   # assets:
