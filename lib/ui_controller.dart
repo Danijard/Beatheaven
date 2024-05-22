@@ -2,14 +2,14 @@
 import 'package:beatheaven/ui/global_ui_values.dart';
 
 void openBottomSheet() {
-  if (!TapDetector.instance.value) {
-    TapDetector.instance.value = true;
+  if (!AnswerDetector.instance.value) {
+    AnswerDetector.instance.value = true;
   }
 }
 
 void closeBottomSheet() {
-  if (TapDetector.instance.value) {
-    TapDetector.instance.value = false;
+  if (AnswerDetector.instance.value) {
+    AnswerDetector.instance.value = false;
   }
 }
 

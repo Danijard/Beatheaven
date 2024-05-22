@@ -64,4 +64,13 @@ flutter {
     source '../..'
 }
 
-dependencies {}
+dependencies {
+    implementation("com.microsoft.signalr:signalr:5.0.11")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.1")
+    implementation("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.2")
+    implementation("androidx.appcompat:appcompat:1.1.0")
+    implementation('com.google.code.gson:gson:2.8.8')
+    // For loading and tinting drawables on older versions of the platform
+    implementation ("androidx.appcompat:appcompat-resources:1.1.0")
+
+}

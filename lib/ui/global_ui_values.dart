@@ -23,6 +23,27 @@ class TapDetector {
   Stream<bool> get onValueChanged => _controller.stream;
 }
 
+class AnswerDetector {
+  AnswerDetector._privateConstructor();
+
+  static final AnswerDetector _instance = AnswerDetector._privateConstructor();
+
+  static AnswerDetector get instance => _instance;
+
+  final _controller = StreamController<bool>.broadcast();
+
+  bool _value = false;
+
+  bool get value => _value;
+
+  set value(bool newValue) {
+    _value = newValue;
+    _controller.sink.add(_value);
+  }
+
+  Stream<bool> get onValueChanged => _controller.stream;
+}
+
 final double pixelRatio = WidgetsBinding.instance.platformDispatcher.views.first.devicePixelRatio;
 final screenHeight = WidgetsBinding.instance.platformDispatcher.views.first.physicalSize.height
      / WidgetsBinding.instance.platformDispatcher.views.first.devicePixelRatio;

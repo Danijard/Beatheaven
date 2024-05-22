@@ -17,7 +17,8 @@ class BottomSheetWidget extends StatefulWidget {
 }
 
 class _BottomSheetWidgetState extends State<BottomSheetWidget> with SingleTickerProviderStateMixin {
-  late StreamSubscription<bool> _subscription;
+  late StreamSubscription<bool> _onTapSubscription;
+  late StreamSubscription<bool> _onAnswerSubscription;
 
   late AnimationController _controller;
   late Animation<double> _animationSheet;
@@ -71,17 +72,16 @@ class _BottomSheetWidgetState extends State<BottomSheetWidget> with SingleTicker
       }
     });
 
-    _subscription = TapDetector.instance.onValueChanged.listen((newValue) {
-      closeBottomSheet();
+    TapDetector.instance.onValueChanged.listen((newValue){
+      if (_isBottomSheetOpen) {
+        _controller.reverse();
+      }
     });
-  }
-
-  void closeBottomSheet() {
-    if (_isBottomSheetOpen) {
-      _controller.reverse();
-    } else {
-      _controller.forward();
-    }
+    AnswerDetector.instance.onValueChanged.listen((newValue){
+      if (!_isBottomSheetOpen) {
+        _controller.forward();
+      }
+    });
   }
 
   @override
@@ -121,7 +121,7 @@ class _BottomSheetWidgetState extends State<BottomSheetWidget> with SingleTicker
 }
 
 class _Content extends StatefulWidget {
-  const _Content({super.key});
+  const _Content();
 
   @override
   State<_Content> createState() => _ContentState();

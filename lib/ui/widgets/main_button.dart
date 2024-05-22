@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'package:beatheaven/platform_interface.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -89,6 +90,8 @@ class RecordButtonState extends State<RecordButton> with TickerProviderStateMixi
                     child: GestureDetector(
                       onTap: () {
                         TapDetector.instance.value = !TapDetector.instance.value;
+                        print('Tapped');
+                        tryRecording();
                         _controllerRotator.forward();
                         _animationRotator = Tween<double>(begin: 0, end: 3600).animate(CurvedAnimation(
                             parent: _controllerRotator,

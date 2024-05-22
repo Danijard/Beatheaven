@@ -1,11 +1,7 @@
-import 'dart:async';
-import 'dart:ui';
-
 import 'package:beatheaven/ui/global_ui_values.dart';
 import 'package:beatheaven/ui/themes/themes.dart';
-import 'package:beatheaven/ui/widgets/bottomsheet.dart';
+import 'package:beatheaven/ui/widgets/bottom_sheet.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 import 'ui/widgets/main_button.dart';
 
@@ -76,7 +72,7 @@ class DebugButton extends StatelessWidget {
       left: 0,
       child: GestureDetector(
         onTap: () {
-          TapDetector.instance.value = !TapDetector.instance.value;
+          AnswerDetector.instance.value = !AnswerDetector.instance.value;
         },
         child: Container(
           width: 50,
@@ -85,19 +81,5 @@ class DebugButton extends StatelessWidget {
         ),
       ),
     );
-  }
-}
-
-class Channel {
-  static const platform = MethodChannel('samples.flutter.dev/function');
-
-  static Future<String> callKotlinFunction() async {
-    String result;
-    try {
-      result = await platform.invokeMethod('callFunction');
-    } on PlatformException catch (e) {
-      result = "Failed to call function: '${e.message}'.";
-    }
-    return result;
   }
 }
