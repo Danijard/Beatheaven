@@ -1,8 +1,16 @@
-# BeatheavenMobile
-Это репозиторий с мобильным приложением для мобильного проекта - аналога shazam.
+# beatheaven
 
-## Ссылки на остальные репозитории проекта:
-https://github.com/akella44/BeatheavenBackend (бэкенд)\
-https://github.com/actuallynotsarcasm/beatheaven_ai (api нейросетей для проекта)\
+A new Flutter project.
 
-Пока тут пусто, но в ветках уже что-то происходит)
+## Getting Started
+
+This project is a starting point for a Flutter application.
+
+A few resources to get you started if this is your first Flutter project:
+
+- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
+- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+
+For help getting started with Flutter development, view the
+[online documentation](https://docs.flutter.dev/), which offers tutorials,
+samples, guidance on mobile development, and a full API reference.
