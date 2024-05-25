@@ -71,4 +71,5 @@ dependencies {
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("androidx.appcompat:appcompat-resources:1.6.1")
     implementation("com.android.support.test:rules:1.0.2")
+    implementation("com.google.code.gson:gson:2.10.1")
 }

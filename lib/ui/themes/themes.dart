@@ -20,7 +20,6 @@ class Themes {
         mainButtonSoftLightGradientColors = [
           mainButtonGradientColor.withOpacity(0.2),
           backgroundColor.withOpacity(0),
-          /*const Color(0x00FFFFFF)*/
         ];
 }
 

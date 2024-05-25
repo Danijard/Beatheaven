@@ -1,0 +1,1 @@
+ G:\\Repos\\BeatheavenMobile\\.dart_tool\\flutter_build\\3a93608a95854b8bc0bfad856f612069\\native_assets.yaml: 
