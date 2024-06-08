@@ -127,6 +127,9 @@ class _Content extends StatefulWidget {
 }
 
 class _ContentState extends State<_Content> {
+  var closingFlag = false;
+  var tapPositionY = 0.0;
+
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -146,6 +149,15 @@ class _ContentState extends State<_Content> {
                   spreadRadius: 1,
                 ),
               ],
+            ),
+            child: GestureDetector(
+              onPanUpdate: (details) {
+                tapPositionY += details.delta.dy;
+                if (tapPositionY > 20 && !closingFlag) {
+                  TapDetector.instance.value = !TapDetector.instance.value;
+                  closingFlag = true;
+                }
+              },
             ),
           ),
         ),

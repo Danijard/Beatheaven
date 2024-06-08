@@ -68,7 +68,7 @@ class DebugButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Positioned(
-      top: 0,
+      top: 25,
       left: 0,
       child: GestureDetector(
         onTap: () {
@@ -77,7 +77,7 @@ class DebugButton extends StatelessWidget {
         child: Container(
           width: 50,
           height: 50,
-          color: Colors.red,
+          color: Colors.red.withOpacity(0.25),
         ),
       ),
     );

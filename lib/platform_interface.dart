@@ -10,7 +10,7 @@ Future<void> tryRecording() async {
     foundTitle = result[0];
     foundAuthor = result[1];
     coverURl = result[2];
-    openBottomSheet();
+    changeBottomSheetState();
   } on PlatformException catch (e) {
     print('Failed to record: ${e.message}');
   }
